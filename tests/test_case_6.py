@@ -9,6 +9,13 @@ from playwright.sync_api import Page, expect
 def test_login_and_logout_link(
     quotes_home_page: Page, quotes_home_url: str, quotes_credentials: dict[str, str]
 ) -> None:
+    """
+    Verify that the login functionality on Quotes to Scrape works
+    correctly by opening the homepage, navigating to the login page,
+    entering valid credentials, and submitting the login form. Verify
+    that the login request completes successfully and that the Logout
+    link is visible, enabled, and available for interaction.
+    """
     page = quotes_home_page
     login_link = page.get_by_role("link", name="Login")
     logout = page.get_by_role("link", name="Logout")

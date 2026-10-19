@@ -9,6 +9,12 @@ from playwright.sync_api import Page, expect
 def test_book_data_consistency(
     books_home_page: Page, books_home_url: str, random_book_indices: list[int]
 ) -> None:
+    """
+    Verify that the title and price of five randomly selected books on
+    the homepage match the corresponding title and price displayed on
+    each book's details page. Navigate back to the homepage after
+    validating each book.
+    """
     page = books_home_page
     books = page.locator("article.product_pod")
 

@@ -9,6 +9,12 @@ from playwright.sync_api import Page, expect
 def test_random_book_navigation(
     books_home_page: Page, books_home_url: str, random_book_indices: list[int]
 ) -> None:
+    """
+    Verify that five randomly selected books open successfully, their
+    details pages load correctly, the H1 titles match the selected book
+    titles, and book information is displayed properly. Navigate back
+    to the homepage after verifying each book.
+    """
     page = books_home_page
     books = page.locator("article.product_pod")
 

@@ -9,6 +9,13 @@ MAX_PAGES: int = 5
 @allure.feature("Books to Scrape")
 @allure.title("TC5: Product Image Validation")
 def test_product_images_across_pages(books_home_page: Page) -> None:
+    """
+    Verify that all product images on the homepage and subsequent
+    pages are visible and have non-empty src and alt attributes,
+    and that their class attributes contain 'thumbnail'. Click the
+    Next button to validate images on subsequent pages, continuing
+    for a maximum of five pages or until pagination ends.
+    """
     page = books_home_page
     pages_validated = 0
 

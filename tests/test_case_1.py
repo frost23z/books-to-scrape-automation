@@ -7,6 +7,12 @@ from playwright.sync_api import Page, expect
 @allure.feature("Books to Scrape")
 @allure.title("TC1: Homepage Validation")
 def test_home_page(books_home_page: Page, books_home_url: str) -> None:
+    """
+    Verify that the page URL and title match the expected values,
+    all visible headings (h1-h6) are displayed and contain non-empty
+    text, and the Books section is visible and contains at least
+    one book item.
+    """
     page = books_home_page
     headings = page.locator("h1, h2, h3, h4, h5, h6")
     books_section = page.locator("section:has(ol.row)")

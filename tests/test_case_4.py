@@ -8,6 +8,12 @@ from playwright.sync_api import Page
 def test_no_broken_links(
     books_home_page: Page, http_session: requests.Session, request_timeout_seconds: int
 ) -> None:
+    """
+    Verify that all unique hyperlinks on the homepage return successful
+    HTTP response status codes by collecting anchor elements, extracting
+    their href values, removing duplicate URLs, and sending requests to
+    each URL.
+    """
     page = books_home_page
 
     with allure.step("Collect all anchor elements"):
