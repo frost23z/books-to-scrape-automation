@@ -9,9 +9,12 @@ import requests
 from playwright.sync_api import Page
 
 BOOKS_HOME_URL: str = "https://books.toscrape.com/index.html"
+QUOTES_HOME_URL: str = "https://quotes.toscrape.com/"
 RANDOM_BOOK_COUNT: int = 5
 SEED: int = 42
 REQUEST_TIMEOUT_SECONDS: int = 5
+QUOTES_USERNAME: str = "admin"
+QUOTES_PASSWORD: str = "admin"
 
 
 @pytest.hookimpl(tryfirst=True)
@@ -24,6 +27,11 @@ def pytest_sessionstart(session: pytest.Session) -> None:
 @pytest.fixture(scope="session")
 def books_home_url() -> str:
     return BOOKS_HOME_URL
+
+
+@pytest.fixture(scope="session")
+def quotes_home_url() -> str:
+    return QUOTES_HOME_URL
 
 
 @pytest.fixture(scope="session")
@@ -42,10 +50,22 @@ def http_session() -> Generator[requests.Session]:
         yield session
 
 
+@pytest.fixture(scope="session")
+def quotes_credentials() -> dict[str, str]:
+    return {"username": QUOTES_USERNAME, "password": QUOTES_PASSWORD}
+
+
 @pytest.fixture
 def books_home_page(page: Page, books_home_url: str) -> Page:
     with allure.step(f"Navigate to: {books_home_url}"):
         page.goto(books_home_url)
+    return page
+
+
+@pytest.fixture
+def quotes_home_page(page: Page, quotes_home_url: str) -> Page:
+    with allure.step(f"Navigate to: {quotes_home_url}"):
+        page.goto(quotes_home_url)
     return page
 
 
