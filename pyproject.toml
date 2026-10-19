@@ -4,7 +4,11 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
-dependencies = []
+dependencies = [
+    "allure-pytest>=2.16.2",
+    "pytest-html>=4.2.0",
+    "pytest-playwright>=0.10.0",
+]
 
 [dependency-groups]
 dev = [
