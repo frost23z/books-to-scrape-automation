@@ -1,0 +1,13 @@
+services:
+  tests:
+    build: .
+    container_name: books-to-scrape-tests
+    user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
+    init: true
+    ipc: host
+    environment:
+      HOME: /tmp
+    volumes:
+      - .:/app
+      - /app/.venv
+    command: ["uv", "run", "--no-sync", "pytest"]
