@@ -1,3 +1,4 @@
+import logging
 import random
 import shutil
 from collections.abc import Generator
@@ -15,6 +16,13 @@ SEED: int = 42
 REQUEST_TIMEOUT_SECONDS: int = 5
 QUOTES_USERNAME: str = "admin"
 QUOTES_PASSWORD: str = "admin"
+ALLURE_ATTACHMENT_TYPES = {
+    ".png": allure.attachment_type.PNG,
+    ".webm": allure.attachment_type.WEBM,
+    ".zip": allure.attachment_type.ZIP,
+}
+
+logger = logging.getLogger(__name__)
 
 
 @pytest.hookimpl(tryfirst=True)
@@ -22,6 +30,24 @@ def pytest_sessionstart(session: pytest.Session) -> None:
     reports_dir = Path("reports")
     shutil.rmtree(reports_dir, ignore_errors=True)
     (reports_dir / "allure-results").mkdir(parents=True, exist_ok=True)
+    (reports_dir / "test-results").mkdir(parents=True, exist_ok=True)
+
+
+@pytest.hookimpl(hookwrapper=True)
+def pytest_runtest_makereport(item: pytest.Item, call: pytest.CallInfo):
+    outcome = yield
+    report = outcome.get_result()
+    if report.when != "teardown":
+        return
+
+    for name, relative_path in report.user_properties:
+        if name.startswith("playwright_"):
+            path = item.config.invocation_params.dir / relative_path
+            allure.attach.file(
+                path,
+                name=path.name,
+                attachment_type=ALLURE_ATTACHMENT_TYPES.get(path.suffix),
+            )
 
 
 @pytest.fixture(scope="session")
