@@ -1,7 +1,7 @@
 [project]
 name = "books-to-scrape"
 version = "0.1.0"
-description = "Add your description here"
+description = "Playwright + Pytest UI automation framework for Books to Scrape"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
