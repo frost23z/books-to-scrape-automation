@@ -1,14 +1,17 @@
 import random
 import shutil
+from collections.abc import Generator
 from pathlib import Path
 
 import allure
 import pytest
+import requests
 from playwright.sync_api import Page
 
 BOOKS_HOME_URL: str = "https://books.toscrape.com/index.html"
 RANDOM_BOOK_COUNT: int = 5
 SEED: int = 42
+REQUEST_TIMEOUT_SECONDS: int = 5
 
 
 @pytest.hookimpl(tryfirst=True)
@@ -26,6 +29,17 @@ def books_home_url() -> str:
 @pytest.fixture(scope="session")
 def random_no_generator() -> random.Random:
     return random.Random(SEED)
+
+
+@pytest.fixture(scope="session")
+def request_timeout_seconds() -> int:
+    return REQUEST_TIMEOUT_SECONDS
+
+
+@pytest.fixture(scope="session")
+def http_session() -> Generator[requests.Session]:
+    with requests.Session() as session:
+        yield session
 
 
 @pytest.fixture
